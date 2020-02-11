@@ -36,7 +36,7 @@ export default {
         "Sunday",
         "Monday",
         "Tuesday",
-        "Wednesdag",
+        "Wednesday",
         "Thursday",
         "Friday",
         "Saturday"
