@@ -1,18 +1,21 @@
 <template>
-  <loader v-if="loading" />
-  <div v-else class="container">
-    <h1>{{ location.datetime | timeFormater }}</h1>
-    <p class="day">{{ location | dayFormater }}</p>
-    <div class="timezone">{{ location.timezone | timezoneFormater }}</div>
+  <!-- <loader v-if="loading" /> -->
+  <div class="container">
+    <!-- <h1>{{ location.datetime | timeFormater }}</!-->
 
-    <router-link class="button" to="/locations">+</router-link>
+    <!-- <p class="day">{{ location | dayFormater }}</p> -->
+
+    <!-- <div class="timezone">{{ location.timezone | timezoneFormater }}</div> -->
+
+    <!-- <router-link class="button" to="/locations">+</router-link> -->
   </div>
 </template>
 <script>
-import Loader from "@/components/Loader.vue";
+// // import Loader from "@/components/Loader.vue";
 export default {
   name: "Home",
-  components: { Loader },
+  // components: { Loader },
+  /** Local state of the component */
   data() {
     return {
       locationEndpoint: "Europe/Oslo",
@@ -21,6 +24,7 @@ export default {
       interval: null
     };
   },
+  // Filters used to format the different UI components
   filters: {
     timeFormater(datetime) {
       if (datetime) {
@@ -52,6 +56,7 @@ export default {
       }
     }
   },
+  /** Runs every time the component is mounted */
   async mounted() {
     this.loading = true;
     if (this.$route.params.location) {
@@ -60,21 +65,25 @@ export default {
     await this.getLocation(this.locationEndpoint);
     this.loading = false;
   },
+  /** Runs when the component is created */
   created() {
     this.interval = setInterval(
       async () => await this.getLocation(this.locationEndpoint),
       5000
     );
   },
+  /** Runs when the component is destroyed */
   destroyed() {
     clearInterval(this.interval);
   },
+  /** Property that watch changes props */
   watch: {
     async $route(to) {
       await this.getLocation(to.params.location);
     }
   },
   methods: {
+    /** Fetches the current location */
     async getLocation(location) {
       this.location = (
         await this.$http.get(`http://worldtimeapi.org/api/timezone/${location}`)
